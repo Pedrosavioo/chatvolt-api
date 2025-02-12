@@ -5,9 +5,9 @@ class MonitoringController {
       res.status(200).json(monitorings);
    }
 
-   getMonitoringById(req, res) {
-      const { id } = req.params;
-      const monitoring = monitorings.find(m => m.id === id);
+   getMonitoringByName(req, res) {
+      const { courseName } = req.params;
+      const monitoring = monitorings.find(m => m.courseName === courseName);
 
       if (!monitoring) {
          return res.status(404).json({ message: "Monitoria não encontrada." });
@@ -18,13 +18,13 @@ class MonitoringController {
 
    // Criar uma nova monitoria (pode incluir alunos no início)
    createMonitoring(req, res) {
-      const { id, courseId, teacherId, date, studentNames = [] } = req.body;
+      const { id, courseName, date, studentNames = [] } = req.body;
 
-      if (monitorings.some(m => m.id === id)) {
-         return res.status(400).json({ message: "ID da monitoria já existe." });
+      if (monitorings.some(m => m.courseName === courseName)) {
+         return res.status(400).json({ message: "Monitoria para esse curso já existe." });
       }
 
-      const newMonitoring = { id, courseId, teacherId, date, studentNames };
+      const newMonitoring = { id, courseName, date, studentNames };
       monitorings.push(newMonitoring);
 
       res.status(201).json({ message: "Monitoria criada com sucesso!", monitoring: newMonitoring });
@@ -32,10 +32,10 @@ class MonitoringController {
 
    // Adicionar um aluno a uma monitoria existente
    addStudentToMonitoring(req, res) {
-      const { id } = req.params;
+      const { courseName } = req.params;
       const { studentName } = req.body;
 
-      const monitoring = monitorings.find(m => m.id === id);
+      const monitoring = monitorings.find(m => m.courseName === courseName);
       if (!monitoring) {
          return res.status(404).json({ message: "Monitoria não encontrada." });
       }
@@ -56,10 +56,10 @@ class MonitoringController {
 
    // Remover um aluno da monitoria
    removeStudentFromMonitoring(req, res) {
-      const { id } = req.params;
+      const { courseName } = req.params;
       const { studentName } = req.body;
 
-      const monitoring = monitorings.find(m => m.id === id);
+      const monitoring = monitorings.find(m => m.courseName === courseName);
       if (!monitoring) {
          return res.status(404).json({ message: "Monitoria não encontrada." });
       }
@@ -75,9 +75,9 @@ class MonitoringController {
    }
 
    deleteMonitoring(req, res) {
-      const { id } = req.params;
+      const { courseName } = req.params;
 
-      const monitoringIndex = monitorings.findIndex(m => m.id === id);
+      const monitoringIndex = monitorings.findIndex(m => m.courseName === courseName);
       if (monitoringIndex === -1) {
          return res.status(404).json({ message: "Monitoria não encontrada." });
       }

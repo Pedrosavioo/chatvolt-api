@@ -20,7 +20,7 @@ class CourseController {
 
    // Criar um novo curso
    createCourse(req, res) {
-      const { id, name, teacherId } = req.body;
+      const { id, name } = req.body;
 
       // Verificar se o curso com o mesmo ID já existe
       if (courses.some(course => course.id === id)) {
@@ -36,7 +36,7 @@ class CourseController {
    // Atualizar um curso existente
    updateCourse(req, res) {
       const { id } = req.params;
-      const { name, teacherId } = req.body;
+      const { name } = req.body;
 
       const courseIndex = courses.findIndex(course => course.id === id);
 
